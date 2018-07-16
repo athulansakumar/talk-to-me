@@ -3,6 +3,10 @@ module.exports = {
         password: 'welcome1',
         secret: '123123123'
     },
+    sreeja:{
+        password: 'welcome1',
+        secret: '123123123'
+    }
     user2:{
         password: 'welcome1',
         secret: '123123123'
