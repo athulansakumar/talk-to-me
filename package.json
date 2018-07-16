@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng build --prod && node server/server.js",
+    "start": "node server/server.js",
+    "postinstall": "ng build --prod",
     "start-dev": "ng serve --proxy-config proxy.config.json --host 0.0.0.0 --disable-host-check",
     "start-dev-node": "ng build && node server/server.js",
     "build": "ng build",
