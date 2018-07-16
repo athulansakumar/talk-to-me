@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators'
 import { CookieService } from 'ngx-cookie';
 import io from 'socket.io-client';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class ChatService {
 
     init(){
         this.userName = this.cookieService.get('userName');
-        this.socket = io('http://localhost:4200');
+        this.socket = io(environment.baseUrl);
         this.socket.on('whoaru', (data) => {
             console.log(data);
         });
