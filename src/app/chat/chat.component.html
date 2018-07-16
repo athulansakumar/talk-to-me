@@ -1,0 +1,27 @@
+<div>
+<div class="card col-md-6" style="height:300px;">
+  <div class="card-body" #scrollMe [scrollTop]="scrollMe.scrollHeight" style="overflow-y:auto">
+      <div *ngFor="let m of messages">
+          <div class="card" style="padding:2px;" *ngIf="m.from ;else mine">
+              <p><span class="h5">{{m.from}} : </span>{{m.text}}</p>
+          </div>
+          <ng-template #mine>
+              <div class="card text-right">
+                  <p>{{m.text}}</p>
+              </div>
+          </ng-template>
+      </div>
+  </div>
+</div>
+<div class="card col-md-6">
+  <div class="">
+      <form class="form-inline">
+        <div class="form-group col-md-11">
+          <select name="to" [(ngModel)]="to"><option *ngFor="let u of users">{{u}}</option></select>
+          <input type="text" class="form-control col-md-12" id="inputMessage" name="toSent" [(ngModel)]="messageText" placeholder="Enter message">
+        </div>
+        <button type="submit" class="btn btn-primary col-md-1" (click)="sendMessage()">></button>
+      </form>
+  </div>
+</div>
+</div>
