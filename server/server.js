@@ -29,6 +29,10 @@ app.get('/',(req,res) => {
     res.send({ message: 'Hello World! :P'});
 });
 
+app.use((req,res) => {
+    res.sendFile(path.join(__dirname,'../dist/messenger/index.html'));
+});
+
 server.listen(port,()=>{
     console.log('Server started at port',port);
 });

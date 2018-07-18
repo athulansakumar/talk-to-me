@@ -10,26 +10,30 @@ export class ChatComponent implements OnInit {
 
     messageText:string;
     to:string;
-    messages:any;
+    messages:any = {};
     users:string[] = [];
     constructor(private service:ChatService) { }
 
     ngOnInit() {
-        this.messages = [];
         let msg = this.service.init();
         msg.subscribe((data) => {
-            this.messages.push(data);
+            if(!this.messages[data.from])
+                this.messages[data.from] = [];
+            this.messages[data.from].push(data);
             this.playNotifySound();
         });
         this.service.getUsers().subscribe((userList) => {
             this.users = userList;
             if(!this.to) this.to = userList[0];
+            this.messages[this.to] = [];
         });
     }
 
     sendMessage(){
         this.service.send(this.messageText,this.to);
-        this.messages.push({text:this.messageText});
+        if(!this.messages[this.to])
+            this.messages[this.to] = [];
+        this.messages[this.to].push({text:this.messageText});
         this.messageText='';
     }
 

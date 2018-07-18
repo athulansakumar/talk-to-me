@@ -16,6 +16,16 @@ var loadSockets = (io) => {
                 }
             });
         });
+        client.on('disconnect', function() {
+            console.log('Got disconnect!');
+            for(let c in userList){
+                if(client == userList[c]){
+                    delete userList[c];
+                    io.emit('users',Object.keys(userList));
+                    break;
+                }
+            }
+        });
     });
 };
 

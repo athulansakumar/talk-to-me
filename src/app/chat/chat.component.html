@@ -1,7 +1,7 @@
 <div>
 <div class="card col-md-6" style="height:300px;">
   <div class="card-body" #scrollMe [scrollTop]="scrollMe.scrollHeight" style="overflow-y:auto">
-      <div *ngFor="let m of messages">
+      <div *ngFor="let m of messages[to]">
           <div class="card" style="padding:2px;" *ngIf="m.from ;else mine">
               <p><span class="h5">{{m.from}} : </span>{{m.text}}</p>
           </div>
