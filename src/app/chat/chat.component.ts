@@ -19,6 +19,7 @@ export class ChatComponent implements OnInit {
         let msg = this.service.init();
         msg.subscribe((data) => {
             this.messages.push(data);
+            this.playNotifySound();
         });
         this.service.getUsers().subscribe((userList) => {
             this.users = userList;
@@ -29,5 +30,13 @@ export class ChatComponent implements OnInit {
     sendMessage(){
         this.service.send(this.messageText,this.to);
         this.messages.push({text:this.messageText});
+        this.messageText='';
+    }
+
+    playNotifySound(){
+        let audio = new Audio();
+        audio.src = "../../assets/notification_sound.mp3";
+        audio.load();
+        audio.play();
     }
 }
