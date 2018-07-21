@@ -8,14 +8,14 @@ const app = express();
 const port = process.env.PORT || 8081;
 app.use(bodyParser.json());
 
+const SALT = require('../app.properties').jwtSecret;
 var loginDB = require('./tmp-data');
 
 app.post('/api/login',async (req,res) => {
     try {
         var user = req.body;
-        var salt = await bcrypt.genSalt(10);
-        var token = jwt.sign({username:user.username}, salt);
-        // console.log(await bcrypt.hash(user.password,salt));
+        var token = jwt.sign({username:user.username}, SALT);
+        // console.log(await bcrypt.hash(user.password,SALT));
         var result = await bcrypt.compare(user.password,loginDB[user.username].password);
         if(result){
             return res.header('x-auth',token).send({status:'OK'});

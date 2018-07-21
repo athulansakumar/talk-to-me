@@ -14,12 +14,14 @@ export class ChatService {
     incomingData:any;
     userList:any;
     userName:string;
+    token:string;
 
     constructor(private cookieService:CookieService){}
 
     init(){
         this.userName = this.cookieService.get('userName');
-        this.socket = io(environment.baseUrl);
+        this.token = this.cookieService.get('x-auth');
+        this.socket = io(environment.baseUrl,{query:{token:this.token}});
         this.socket.on('whoaru', (data) => {
             console.log(data);
         });

@@ -17,9 +17,11 @@ var io = SocketIO(server);
 
 const configureRoutes = require('./express/express-routes');
 const loadSockets = require('./socket/chat-socket');
+const authenticateSockets = require('./socket/socket-auth');
 
 loadSockets(io);
 configureRoutes(app);
+io.use(authenticateSockets);
 
 server.listen(port,()=>{
     console.log('messenger-web started at port',port);
