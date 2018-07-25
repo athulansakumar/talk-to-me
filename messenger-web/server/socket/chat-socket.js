@@ -1,20 +1,25 @@
+var { ObjectID } = require('mongodb');
 var userList={};
 
 var loadSockets = (io) => {
     io.on('connection', (client) => {
         // console.log('client connected ..',client);
-        client.emit('whoaru',{});
-        client.on('identify',(data)=>{
-            console.log('user : ',data);
-            if(data.userName){
-                userList[data.userName] = client;
-                io.emit('users',Object.keys(userList));
+        // client.emit('whoaru',{});
+        console.log('user : ',client.username);
+        if(client.username){
+            userList[client.username] = client;
+            io.emit('users',Object.keys(userList));
+        }
+        client.on('msg',(msg,ack) => {
+            msg.id= new ObjectID().toHexString();
+            msg.from = client.username;
+            if(msg.to && userList[msg.to]){
+                userList[msg.to].emit('msg',msg,(reAck) => {
+                    client.emit('ack',reAck);
+                });
+                ack({sent:true});
             }
-            client.on('msg',(msg) => {
-                if(msg.to && userList[msg.to]){
-                    userList[msg.to].emit('msg',msg);
-                }
-            });
+            ack({sent:false});
         });
         client.on('disconnect', function() {
             console.log('Got disconnect!');

@@ -13,23 +13,18 @@ export class ChatService {
     socket :any;
     incomingData:any;
     userList:any;
-    userName:string;
     token:string;
 
     constructor(private cookieService:CookieService){}
 
     init(){
-        this.userName = this.cookieService.get('userName');
         this.token = this.cookieService.get('x-auth');
         this.socket = io(environment.baseUrl,{query:{token:this.token}});
-        this.socket.on('whoaru', (data) => {
-            console.log(data);
-        });
-        this.socket.emit('identify',{userName:this.userName})
         this.incomingData = Observable.create((observer) => {
-            this.socket.on('msg',(data) => {
+            this.socket.on('msg',(data,ack) => {
                 console.log(data);
                 observer.next(data);
+                ack({id:data.id,recieved:true});
             });
         });
         return this.incomingData;
@@ -45,8 +40,18 @@ export class ChatService {
         return this.userList;
     }
 
-    send(messageText:string,to:string){
-        var message={text:messageText,to:to,from:this.userName};
-        this.socket.emit('msg',message);
+    send(message:any):Observable<any>{
+        let msgAck = Observable.create((observer) => {
+            this.socket.emit('msg',message, (ack)=>{
+                observer.next(ack);
+                message.id=ack.id;
+            });
+            this.socket.on('ack', (ack)=>{
+                if(message.id === ack.id){
+                    observer.next(ack);
+                }
+            });
+        });
+        return msgAck;
     }
 }

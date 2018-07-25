@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ChatService} from './../service/chat.service';
+import { Message } from './../model/message';
 
 @Component({
   selector: 'app-chat',
@@ -23,14 +24,29 @@ export class ChatComponent implements OnInit {
             this.playNotifySound();
         });
         this.service.getUsers().subscribe((userList) => {
+            /*for(var user of userList){
+                if(!this.users.contains(user)){
+                    this.users.push(user);
+                }
+            }*/
             this.users = userList;
             if(!this.to) this.to = userList[0];
-            this.messages[this.to] = [];
+            if(!this.messages[this.to]) this.messages[this.to] = [];
         });
     }
 
     sendMessage(){
-        this.service.send(this.messageText,this.to);
+        let message= new Message(this.messageText,this.to);
+        this.service.send(message).subscribe((ack:any) => {
+            message.id=ack.id;
+            console.log(ack);
+            if(ack.sent){
+                console.log('single tick');
+            }
+            if(ack.recieved){
+                console.log('double tick');
+            }
+        });
         if(!this.messages[this.to])
             this.messages[this.to] = [];
         this.messages[this.to].push({text:this.messageText});

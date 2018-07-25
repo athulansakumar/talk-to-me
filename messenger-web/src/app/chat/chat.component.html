@@ -1,27 +1,29 @@
 <div>
-<div class="card col-md-6" style="height:300px;">
-  <div class="card-body" #scrollMe [scrollTop]="scrollMe.scrollHeight" style="overflow-y:auto">
-      <div *ngFor="let m of messages[to]">
-          <div class="card" style="padding:2px;" *ngIf="m.from ;else mine">
-              <p><span class="h5">{{m.from}} : </span>{{m.text}}</p>
-          </div>
-          <ng-template #mine>
-              <div class="card text-right">
-                  <p>{{m.text}}</p>
-              </div>
-          </ng-template>
+<div class="card col-md-5 chat-messages">
+  <div  #scrollMe [scrollTop]="scrollMe.scrollHeight" style="overflow-y:auto">
+      <div class="">
+      	<ol class="chat-messages-list">
+      		<li *ngFor="let m of messages[to]" class="chat-message"
+                  [ngClass]="{'chat-message-friend':m.from,'chat-message-self':!m.from}">
+      	           <div class="chat-message-bubble"><span *ngIf="m.from"><em>{{m.from}}</em>:</span> {{m.text}}</div>
+      		</li>
+          </ol>
       </div>
   </div>
 </div>
-<div class="card col-md-6">
-  <div class="">
-      <form class="form-inline">
-        <div class="form-group col-md-11">
-          <select name="to" [(ngModel)]="to"><option *ngFor="let u of users">{{u}}</option></select>
-          <input type="text" class="form-control col-md-12" id="inputMessage" name="toSent" [(ngModel)]="messageText" placeholder="Enter message">
-        </div>
-        <button type="submit" class="btn btn-primary col-md-1" (click)="sendMessage()">></button>
-      </form>
-  </div>
-</div>
+<div class="chat-input-bar col-md-5">
+    <div class="chat-input-wrapper">
+	    <!-- <button class="chat-input-tool">
+            <i class="material-icons">face</i>
+		</button> -->
+        <button title="{{u}}" class="chat-input-tool" *ngFor="let u of users" (click)="to=u">
+            <i class="material-icons" *ngIf="u==to">tag_faces</i>
+            <i class="material-icons" *ngIf="u!=to">face</i>
+		</button>
+	<div class="chat-input" contenteditable="" #msgtext (input)="messageText=msgtext.textContent">
+    </div>
+	<button class="chat-send" (click)="sendMessage()">
+		<i class="material-icons">send</i>
+	</button>
+	</div>
 </div>
