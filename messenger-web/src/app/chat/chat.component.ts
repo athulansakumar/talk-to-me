@@ -9,7 +9,6 @@ import { Message } from './../model/message';
 })
 export class ChatComponent implements OnInit {
 
-    messageText:string;
     to:string;
     messages:any = {};
     users:string[] = [];
@@ -35,22 +34,26 @@ export class ChatComponent implements OnInit {
         });
     }
 
-    sendMessage(){
-        let message= new Message(this.messageText,this.to);
+    sendMessage(messageText:any,$event:any){
+        let message= new Message(messageText.textContent,this.to);
         this.service.send(message).subscribe((ack:any) => {
             message.id=ack.id;
             console.log(ack);
             if(ack.sent){
                 console.log('single tick');
+                message.sent = true;
             }
             if(ack.recieved){
                 console.log('double tick');
+                message.seen = true;
             }
         });
         if(!this.messages[this.to])
             this.messages[this.to] = [];
-        this.messages[this.to].push({text:this.messageText});
-        this.messageText='';
+        this.messages[this.to].push(message);
+        console.log(messageText.innerHTML);
+        messageText.innerHTML='';
+        $event.preventDefault();
     }
 
     playNotifySound(){

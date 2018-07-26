@@ -6,6 +6,9 @@
       		<li *ngFor="let m of messages[to]" class="chat-message"
                   [ngClass]="{'chat-message-friend':m.from,'chat-message-self':!m.from}">
       	           <div class="chat-message-bubble"><span *ngIf="m.from"><em>{{m.from}}</em>:</span> {{m.text}}</div>
+                   <i class="material-icons" *ngIf="!m.from && !m.seen && !m.sent">donut_large</i>
+                   <i class="material-icons" *ngIf="!m.from && m.sent && !m.seen">done</i>
+                   <i class="material-icons" *ngIf="!m.from && m.seen">done_all</i>
       		</li>
           </ol>
       </div>
@@ -20,9 +23,9 @@
             <i class="material-icons" *ngIf="u==to">tag_faces</i>
             <i class="material-icons" *ngIf="u!=to">face</i>
 		</button>
-	<div class="chat-input" contenteditable="" #msgtext (input)="messageText=msgtext.textContent">
+	<div class="chat-input single-line" contenteditable="" #msgtext (keydown.enter)="sendMessage(msgtext,$event)">
     </div>
-	<button class="chat-send" (click)="sendMessage()">
+	<button class="chat-send" (click)="sendMessage(msgtext,$event)">
 		<i class="material-icons">send</i>
 	</button>
 	</div>

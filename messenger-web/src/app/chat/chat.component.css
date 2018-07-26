@@ -147,3 +147,18 @@ color: #2B8EC2;
 .chat-send>i {
 position: relative;
 }
+
+.single-line {
+        white-space: nowrap;
+        width:200px;
+        overflow: hidden;
+}
+
+.single-line br{
+    display:none;
+}
+
+.chat-message i{
+    font-size: 15px;
+    vertical-align: bottom;
+}

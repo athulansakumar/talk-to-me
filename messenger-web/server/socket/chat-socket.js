@@ -17,9 +17,9 @@ var loadSockets = (io) => {
                 userList[msg.to].emit('msg',msg,(reAck) => {
                     client.emit('ack',reAck);
                 });
-                ack({sent:true});
+                ack({id:msg.id,sent:true});
             }
-            ack({sent:false});
+            ack({id:msg.id,sent:false});
         });
         client.on('disconnect', function() {
             console.log('Got disconnect!');
