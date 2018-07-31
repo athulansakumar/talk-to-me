@@ -1,5 +1,12 @@
-<div>
-<div class="card col-md-5 chat-messages">
+<div >
+<div class="card col-md-5 main-container">
+    <div style="min-height:35px"></div>
+    <div class="chat-heads">
+        <img src="assets/user.png"
+        *ngFor="let u of users" (click)="to=u" [title]="u" class="img-thumbnail rounded-item" [ngClass]="{'active-chat-head':u==to}" alt="..." style="">
+    </div>
+
+<div class="chat-messages">
   <div  #scrollMe [scrollTop]="scrollMe.scrollHeight" style="overflow-y:auto">
       <div class="">
       	<ol class="chat-messages-list">
@@ -14,14 +21,14 @@
       </div>
   </div>
 </div>
+</div>
 <div class="chat-input-bar col-md-5">
     <div class="chat-input-wrapper">
 	    <!-- <button class="chat-input-tool">
             <i class="material-icons">face</i>
 		</button> -->
-        <button title="{{u}}" class="chat-input-tool" *ngFor="let u of users" (click)="to=u">
-            <i class="material-icons" *ngIf="u==to">tag_faces</i>
-            <i class="material-icons" *ngIf="u!=to">face</i>
+        <button class="chat-input-tool">
+            <i class="material-icons" *ngIf="u!=to">tag_faces</i>
 		</button>
 	<div class="chat-input single-line" contenteditable="" #msgtext (keydown.enter)="sendMessage(msgtext,$event)">
     </div>

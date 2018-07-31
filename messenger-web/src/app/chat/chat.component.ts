@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {ChatService} from './../service/chat.service';
+import { Component, OnInit, HostBinding } from '@angular/core';
+import { ChatService } from './../service/chat.service';
 import { Message } from './../model/message';
 
 @Component({
@@ -23,12 +23,12 @@ export class ChatComponent implements OnInit {
             this.playNotifySound();
         });
         this.service.getUsers().subscribe((userList) => {
-            /*for(var user of userList){
-                if(!this.users.contains(user)){
+            for(var user of userList){
+                if(!this.users.includes(user)){
                     this.users.push(user);
                 }
-            }*/
-            this.users = userList;
+            }
+            // this.users = userList;
             if(!this.to) this.to = userList[0];
             if(!this.messages[this.to]) this.messages[this.to] = [];
         });

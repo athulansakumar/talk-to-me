@@ -1,5 +1,5 @@
 <router-outlet></router-outlet>
-<span *ngIf="loggedInUser">Hi {{loggedInUser}}</span>
-<nav>
+<nav *ngIf="loggedInUser">
+    <span>Hi {{loggedInUser}}</span>
     <a routerLink="/logout" routerLinkActive="active" (click)="loggedInUser=''">Logout</a>
 </nav>

@@ -27,7 +27,7 @@ list-style-type: none;
 padding: 0;
 margin: 0;
 width: 100%;
-padding: 15px 25px 60px;
+padding: 45px 25px 60px;
 }
 
 .chat-message {
@@ -161,4 +161,30 @@ position: relative;
 .chat-message i{
     font-size: 15px;
     vertical-align: bottom;
+}
+
+.active-chat-head{
+    max-height:60px !important;
+    max-width:60px !important;
+    border:2px solid #32A8E6;
+}
+
+.rounded-item{
+    margin-left: 5px;
+    max-height:50px;
+    max-width:50px;
+    border-radius:60px;
+}
+
+.chat-heads{
+    position: absolute;
+    left:5px;
+    top:10px;
+    z-index: 1;
+}
+
+
+.main-container{
+    padding-left: 0;
+    padding-right: 0;
 }

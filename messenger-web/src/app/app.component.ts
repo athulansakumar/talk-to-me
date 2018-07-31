@@ -8,9 +8,14 @@ import { CookieService } from 'ngx-cookie';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  loggedInUser:string;
+    loggedInUser:string;
+  constructor(private cookieService:CookieService){}
 
-  constructor(private cookieService:CookieService){
-      this.loggedInUser = this.cookieService.get('userName');
+  onLoginEvent(isLoggedIn:boolean){
+      if(isLoggedIn){
+          this.loggedInUser = this.cookieService.get('userName');
+      }else{
+          this.loggedInUser = '';
+      }
   }
 }
