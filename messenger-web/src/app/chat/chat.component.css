@@ -163,6 +163,11 @@ position: relative;
     vertical-align: bottom;
 }
 
+.chat-message-time{
+    font-size: 10px;
+    vertical-align: bottom;
+}
+
 .active-chat-head{
     max-height:60px !important;
     max-width:60px !important;

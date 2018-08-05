@@ -60,10 +60,15 @@ export class ChatComponent implements OnInit {
         $event.preventDefault();
     }
 
-    resolveUser(id:string){
+    resolveUser(id:string):string{
         let user:User = _.find(this.users, ['_id', id]);
         if(user) return user.firstName;
         return '<UnKnown>';
+    }
+
+    resolveDateFromId(id:string):string{
+	       let date = new Date(parseInt(id.substring(0, 8), 16) * 1000);
+           return (date.getHours()%12)+":"+date.getMinutes()+((date.getHours()/12 < 1)?'am':'pm');
     }
 
     playNotifySound(){

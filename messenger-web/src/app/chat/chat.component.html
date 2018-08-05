@@ -17,6 +17,7 @@
       		<li *ngFor="let m of messages[to]" class="chat-message"
                   [ngClass]="{'chat-message-friend':m.from,'chat-message-self':!m.from}">
       	           <div class="chat-message-bubble"><span *ngIf="m.from"><em>{{resolveUser(m.from)}}</em>:</span> {{m.text}}</div>
+                   <span class="chat-message-time">{{resolveDateFromId(m.id)}}</span>
                    <i class="material-icons" *ngIf="!m.from && !m.seen && !m.sent">donut_large</i>
                    <i class="material-icons" *ngIf="!m.from && m.sent && !m.seen">done</i>
                    <i class="material-icons" *ngIf="!m.from && m.seen">done_all</i>
