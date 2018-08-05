@@ -15,6 +15,16 @@ var configureRoutes = (app) => {
         res.header(resHeader).send(resBody);
     });
 
+    app.get('/api/user/:id',async (req,res) => {
+        try{
+            var loginRes = await axios.get(`${authBaseUrl}/api/user/${req.params.id}`);
+            var resBody = loginRes.data;
+        }catch(err){
+            return res.send({status:'ERROR', errorMessage:'Please try again!'});
+        }
+        res.send(resBody);
+    });
+
     app.get('/health',(req,res) => {
         res.send({ message: 'messenger-web'});
     });

@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators'
 import { CookieService } from 'ngx-cookie';
 import io from 'socket.io-client';
 import { environment } from '../../environments/environment';
+import { User } from '../model/user';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class ChatService {
     userList:any;
     token:string;
 
-    constructor(private cookieService:CookieService){}
+    constructor(private http:HttpClient,private cookieService:CookieService){}
 
     init(){
         this.token = this.cookieService.get('x-auth');
@@ -53,5 +54,9 @@ export class ChatService {
             });
         });
         return msgAck;
+    }
+
+    getUserDetails(id:string):Observable<any>{
+        return this.http.get(`/api/user/${id}`);
     }
 }

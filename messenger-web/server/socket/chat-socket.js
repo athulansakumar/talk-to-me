@@ -5,14 +5,14 @@ var loadSockets = (io) => {
     io.on('connection', (client) => {
         // console.log('client connected ..',client);
         // client.emit('whoaru',{});
-        console.log('user : ',client.username);
-        if(client.username){
-            userList[client.username] = client;
+        console.log('user : ',client._id);
+        if(client._id){
+            userList[client._id] = client;
             io.emit('users',Object.keys(userList));
         }
         client.on('msg',(msg,ack) => {
             msg.id= new ObjectID().toHexString();
-            msg.from = client.username;
+            msg.from = client._id;
             if(msg.to && userList[msg.to]){
                 userList[msg.to].emit('msg',msg,(reAck) => {
                     client.emit('ack',reAck);

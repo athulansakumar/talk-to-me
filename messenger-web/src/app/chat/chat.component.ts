@@ -1,6 +1,8 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { ChatService } from './../service/chat.service';
 import { Message } from './../model/message';
+import { User } from './../model/user';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-chat',
@@ -11,7 +13,7 @@ export class ChatComponent implements OnInit {
 
     to:string;
     messages:any = {};
-    users:string[] = [];
+    users:User[] = [];
     constructor(private service:ChatService) { }
 
     ngOnInit() {
@@ -24,8 +26,10 @@ export class ChatComponent implements OnInit {
         });
         this.service.getUsers().subscribe((userList) => {
             for(var user of userList){
-                if(!this.users.includes(user)){
-                    this.users.push(user);
+                if(!_.find(this.users, ['_id', user])){
+                    this.service.getUserDetails(user).subscribe((u) => {
+                        this.users.push(u);
+                    });
                 }
             }
             // this.users = userList;
@@ -54,6 +58,12 @@ export class ChatComponent implements OnInit {
         console.log(messageText.innerHTML);
         messageText.innerHTML='';
         $event.preventDefault();
+    }
+
+    resolveUser(id:string){
+        let user:User = _.find(this.users, ['_id', id]);
+        if(user) return user.firstName;
+        return '<UnKnown>';
     }
 
     playNotifySound(){
