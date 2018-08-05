@@ -10,6 +10,7 @@ web:
 
 auth:
 	nohup mongod --dbpath=/var/mongodb &
+	sleep 5
 	cd messenger-auth; nodemon --inspect=9229 server/server.js
 
 heroku:
