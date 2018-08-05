@@ -10,8 +10,8 @@ const argv = require('./yargs/yargs-configure');
 const properties = require('../app.properties');
 
 const {initDb} = require('./db/db');
-
-initDb(properties[argv.env].dbUrl);
+const URI = process.env.MONGODB_URI || properties[argv.env].dbUrl;
+initDb(URI);
 
 const routes = require('./express/express-routes');
 routes(app);
