@@ -82,10 +82,10 @@ export class ChatComponent implements OnInit {
 
     resolveDateFromId(id:string):string{
         return '';
-        if(id){
+        /*if(id){
             let date = new Date(parseInt(id.substring(0, 8), 16) * 1000);
             return (date.getHours()%12)+":"+("0"+date.getMinutes()).slice(-2)+((date.getHours()/12 < 1)?'am':'pm');
-        }
+        }*/
     }
 
     playNotifySound(){
