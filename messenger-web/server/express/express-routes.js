@@ -29,8 +29,8 @@ var configureRoutes = (app) => {
         res.send({ message: 'messenger-web'});
     });
 
-    app.use((req,res) => {
-        res.sendFile(path.join(__dirname,'../dist/messenger/index.html'));
+    app.get('*',(req,res) => {
+        res.sendFile(path.join(__dirname,'../dist/messenger/index.html'),{req});
     });
 };
 
