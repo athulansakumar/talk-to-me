@@ -1,13 +1,27 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
+import {  trigger,  state,  style,  animate,  transition } from '@angular/animations';
+import * as _ from 'lodash';
+
 import { ChatService } from './../service/chat.service';
 import { Message } from './../model/message';
 import { User } from './../model/user';
-import * as _ from 'lodash';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.css']
+  styleUrls: ['./chat.component.css'],
+  animations: [
+      trigger('myMessage', [
+          transition('void => *', [
+              style({
+                //   position: 'absolute',
+                //   top: '420px',
+                  transform: 'scale(0.2)'//'translateX(-100px)'
+              }),
+              animate('200ms')
+          ]),
+      ])
+  ]
 })
 export class ChatComponent implements OnInit {
 
@@ -67,8 +81,11 @@ export class ChatComponent implements OnInit {
     }
 
     resolveDateFromId(id:string):string{
-	       let date = new Date(parseInt(id.substring(0, 8), 16) * 1000);
-           return (date.getHours()%12)+":"+("0"+date.getMinutes()).slice(-2)+((date.getHours()/12 < 1)?'am':'pm');
+        return '';
+        if(id){
+            let date = new Date(parseInt(id.substring(0, 8), 16) * 1000);
+            return (date.getHours()%12)+":"+("0"+date.getMinutes()).slice(-2)+((date.getHours()/12 < 1)?'am':'pm');
+        }
     }
 
     playNotifySound(){

@@ -15,7 +15,7 @@ const appRoutes: Routes = [
   { path: 'login',  loadChildren: '../login/login.module#LoginModule' },
   { path: 'logout', canActivate: [AuthService], loadChildren: '../login/login.module#LoginModule'},
   { path: 'chat',  component: ChatComponent , canActivate :[AuthService] },
-  { path: '' , redirectTo: 'login' , pathMatch:'full' }
+  { path: '' , redirectTo: 'chat' , pathMatch:'full' }
 ];
 
 @NgModule({
