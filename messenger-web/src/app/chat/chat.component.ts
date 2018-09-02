@@ -1,10 +1,11 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
+import { Component, OnInit, HostBinding, ElementRef } from '@angular/core';
 import {  trigger,  state,  style,  animate,  transition } from '@angular/animations';
 import * as _ from 'lodash';
 
 import { ChatService } from './../service/chat.service';
 import { Message } from './../model/message';
 import { User } from './../model/user';
+import {Emojis} from './emoji-list';
 
 @Component({
   selector: 'app-chat',
@@ -16,7 +17,8 @@ import { User } from './../model/user';
               style({
                 //   position: 'absolute',
                 //   top: '420px',
-                  transform: 'scale(0.2)'//'translateX(-100px)'
+                  // width:'100%',
+                  transform: 'scaleX(0.1)'//'translateX(-100px)'
               }),
               animate('200ms')
           ]),
@@ -28,6 +30,9 @@ export class ChatComponent implements OnInit {
     to:string;
     messages:any = {};
     users:User[] = [];
+    emojiList = [];
+    showEmojiPopOver:boolean = false;
+
     constructor(private service:ChatService) { }
 
     ngOnInit() {
@@ -50,6 +55,8 @@ export class ChatComponent implements OnInit {
             if(!this.to) this.to = userList[0];
             if(!this.messages[this.to]) this.messages[this.to] = [];
         });
+
+        this.emojiList = Emojis.getEmojiList();
     }
 
     sendMessage(messageText:any,$event:any){
@@ -86,6 +93,19 @@ export class ChatComponent implements OnInit {
             let date = new Date(parseInt(id.substring(0, 8), 16) * 1000);
             return (date.getHours()%12)+":"+("0"+date.getMinutes()).slice(-2)+((date.getHours()/12 < 1)?'am':'pm');
         }*/
+    }
+
+    emojiPipe(text: string):string{
+        text = text.replace(':)','<i class="em em-smile"></i>');
+        text = text.replace(':*','<i class="em em-kiss"></i>');
+        text = text.replace(/\(\((.*)\)\)/i,'<i class="em em-$1"></i>');
+        text = text.replace(':D','<i class="material-icons">tag_faces</i>');
+        return text;
+    }
+
+    addEmoji(e:string,input:any){
+        input.textContent = input.textContent+"(("+e+"))";
+        this.showEmojiPopOver =false;
     }
 
     playNotifySound(){

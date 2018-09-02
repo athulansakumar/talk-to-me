@@ -6,6 +6,7 @@ dev :
 	cd messenger-web; npm run start-dev
 
 web:
+	cd messenger-web; nodemon --inspect=9228 server/server.js &
 	cd messenger-web; npm run start-dev
 
 auth:

@@ -16,7 +16,7 @@
       	<ol class="chat-messages-list">
       		<li *ngFor="let m of messages[to]" class="chat-message"
                   [@myMessage] [ngClass]="{'chat-message-friend':m.from,'chat-message-self':!m.from}">
-      	           <div class="chat-message-bubble"><span *ngIf="m.from"><em>{{resolveUser(m.from)}}</em>:</span> {{m.text}}</div>
+      	           <div class="chat-message-bubble"><span *ngIf="m.from"><em>{{resolveUser(m.from)}}</em>:</span><span [innerHTML]="emojiPipe(m.text)"></span></div>
                    <span class="chat-message-time">{{resolveDateFromId(m.id)}}</span>
                    <i class="material-icons" *ngIf="!m.from && !m.seen && !m.sent">donut_large</i>
                    <i class="material-icons" *ngIf="!m.from && m.sent && !m.seen">done</i>
@@ -27,13 +27,21 @@
   </div>
 </div>
 </div>
+<div *ngIf="showEmojiPopOver" class="popover fade show bs-popover-top" role="tooltip" id="popover637946" x-placement="top"
+style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(2px, 290px, 0px);padding:2px;">
+<div class="arrow" style="left: 24px;"></div>
+    <h3 class="popover-header"></h3>
+    <div class="popover-body" style="max-height:200px;overflow-y:scroll;">
+        <span *ngFor="let e of emojiList" style="padding:2px" (click)="addEmoji(e,msgtext)" ><i class="em em-{{e}}"></i></span>
+    </div>
+</div>
 <div class="chat-input-bar col-md-5">
     <div class="chat-input-wrapper">
 	    <!-- <button class="chat-input-tool">
             <i class="material-icons">face</i>
 		</button> -->
         <button class="chat-input-tool">
-            <i class="material-icons">tag_faces</i>
+            <i class="material-icons" (click)="showEmojiPopOver=!showEmojiPopOver">tag_faces</i>
 		</button>
 	<div class="chat-input single-line" contenteditable="" #msgtext (keydown.enter)="sendMessage(msgtext,$event)">
     </div>
