@@ -5,7 +5,8 @@ import * as properties from  '../../app.properties';
 
 export const environment = {
   production: false,
-  baseUrl: properties.dev.webBaseUrl
+  baseUrl: properties.dev.webBaseUrl,
+  publicKey: properties.vapid.public
 };
 
 /*

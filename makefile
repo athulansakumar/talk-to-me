@@ -9,6 +9,9 @@ web:
 	cd messenger-web; nodemon --inspect=9228 server/server.js &
 	cd messenger-web; npm run start-dev
 
+web-build:
+	cd messenger-web; ng build --prod
+
 auth:
 	nohup mongod --dbpath=/var/mongodb &
 	sleep 5
@@ -22,3 +25,6 @@ heroku-web:
 
 heroku-auth:
 	git subtree push --prefix messenger-auth heroku-auth master
+
+clean:
+	kill -9 $(ps -ef | grep server.js | grep -v 'grep' | cut -d " " -f 5)

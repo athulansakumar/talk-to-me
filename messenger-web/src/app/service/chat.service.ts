@@ -15,12 +15,17 @@ export class ChatService {
     incomingData:any;
     userList:any;
     token:string;
+    pushSubscription:any;
 
     constructor(private http:HttpClient,private cookieService:CookieService){}
 
     init(){
         this.token = this.cookieService.get('x-auth');
         this.socket = io(environment.baseUrl,{query:{token:this.token}});
+        if(this.pushSubscription){
+            this.socket.emit('push-sub',this.pushSubscription);
+            console.log('pushSubscription sent');
+        }
         this.incomingData = Observable.create((observer) => {
             this.socket.on('msg',(data,ack) => {
                 console.log(data);
@@ -58,5 +63,13 @@ export class ChatService {
 
     getUserDetails(id:string):Observable<any>{
         return this.http.get(`/api/user/${id}`);
+    }
+
+    savePushSubscription(pSub:any){
+        this.pushSubscription = pSub;
+        if(this.pushSubscription && this.socket){
+            this.socket.emit('push-sub',this.pushSubscription);
+            console.log('pushSubscription sent');
+        }
     }
 }

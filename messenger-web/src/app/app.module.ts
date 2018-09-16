@@ -10,6 +10,8 @@ import { AppComponent } from './app.component';
 import { ChatComponent } from './chat/chat.component';
 import { AuthService } from './service/auth.service';
 import { ChatService } from './service/chat.service';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 const appRoutes: Routes = [
   { path: 'login',  loadChildren: '../login/login.module#LoginModule' },
@@ -32,7 +34,8 @@ const appRoutes: Routes = [
     RouterModule.forRoot(
       appRoutes
     //   , { enableTracing: true } // <-- debugging purposes only
-    )
+    ),
+    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
       AuthService,
