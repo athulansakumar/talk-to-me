@@ -1,7 +1,7 @@
 const { ObjectID } = require('mongodb');
 const webpush = require('web-push');
 
-const properties = require('../../../app.properties');
+const properties = require('./../../app.properties');
 
 webpush.setVapidDetails(
     properties.vapid.email,
