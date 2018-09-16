@@ -25,6 +25,5 @@ heroku-web:
 
 heroku-auth:
 	git subtree push --prefix messenger-auth heroku-auth master
-
-clean:
-	kill -9 $(ps -ef | grep server.js | grep -v 'grep' | cut -d " " -f 5)
+	
+#	kill -9 $("ps -ef | grep server.js | grep -v 'grep' | cut -d " " -f 5")
