@@ -1,5 +1,5 @@
-<div >
-<div class="card col-md-5 main-container">
+<div>
+<div class="card col-md-12 main-container">
     <div style="min-height:35px">
         <div class="pull-right" style="float: right">
             <h5 style="padding-right: 20px;padding-top: 5px;">{{resolveUser(to)}}</h5>
@@ -11,12 +11,15 @@
     </div>
 
 <div class="chat-messages">
-  <div  #scrollMe [scrollTop]="scrollMe.scrollHeight" style="overflow-y:auto">
+    <!--#scrollMe [scrollTop]="scrollMe.scrollHeight"-->
+  <div   style="overflow-y:auto">
       <div class="">
       	<ol class="chat-messages-list">
       		<li *ngFor="let m of messages[to]" class="chat-message"
                   [@myMessage] [ngClass]="{'chat-message-friend':m.from,'chat-message-self':!m.from}">
-      	           <div class="chat-message-bubble"><span *ngIf="m.from"><em>{{resolveUser(m.from)}}</em>:</span><span [innerHTML]="emojiPipe(m.text)"></span></div>
+      	           <div class="chat-message-bubble">
+                       <!-- <span *ngIf="m.from"><em>{{resolveUser(m.from)}}</em>:</span> -->
+                       <span [innerHTML]="emojiPipe(m.text)"></span></div>
                    <span class="chat-message-time">{{resolveDateFromId(m.id)}}</span>
                    <i class="material-icons" *ngIf="!m.from && !m.seen && !m.sent">donut_large</i>
                    <i class="material-icons" *ngIf="!m.from && m.sent && !m.seen">done</i>
@@ -35,15 +38,15 @@ style="position: absolute; will-change: transform; top: 0px; left: 0px; transfor
         <span *ngFor="let e of emojiList" style="padding:2px" (click)="addEmoji(e,msgtext)" ><i class="em em-{{e}}"></i></span>
     </div>
 </div>
-<div class="chat-input-bar col-md-5">
+<div class="chat-input-bar col-md-12">
     <div class="chat-input-wrapper">
 	    <!-- <button class="chat-input-tool">
             <i class="material-icons">face</i>
 		</button> -->
-        <button class="chat-input-tool">
+        <button class="chat-input-tool" *ngIf="to != '$$ADMIN$$'">
             <i class="material-icons" (click)="showEmojiPopOver=!showEmojiPopOver">tag_faces</i>
 		</button>
-	<div class="chat-input single-line" contenteditable="" #msgtext (keydown.enter)="sendMessage(msgtext,$event)">
+	<div class="chat-input single-line" contenteditable="" [ngClass]="{'collapse':(to == '$$ADMIN$$')}" #msgtext (keydown.enter)="sendMessage(msgtext,$event)">
     </div>
 	<button class="chat-send" (click)="sendMessage(msgtext,$event)">
 		<i class="material-icons">send</i>

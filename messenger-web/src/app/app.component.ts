@@ -21,7 +21,7 @@ export class AppComponent implements OnInit{
       }).then(sub => {
           console.log("subscribtion",sub);
           this.chatService.savePushSubscription(sub);
-      }).catch(err => console.error("Could not subscribe to notifications", err));
+      }).catch(err => console.error("Could not subscribe to notifications"));
   }
 
   onLoginEvent(isLoggedIn:boolean){

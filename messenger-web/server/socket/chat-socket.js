@@ -44,7 +44,7 @@ var loadSockets = (io) => {
                                     "message":msg
                                 },
                                 "actions": [{
-                                    "action": "explore",
+                                    "action": "",
                                     "title": "Go to the site"
                                 }]
                             }
@@ -53,6 +53,12 @@ var loadSockets = (io) => {
                 }
             }
             ack({id:msg.id,sent:true});
+        });
+        client.on('online',(online)=>{
+            console.log('online',client._id);
+            client.broadcast.emit('online',client._id);
+            if(!userList[client._id]) userList[client._id] = {};
+            userList[client._id].lastSeen = new Date();
         });
         client.on('push-sub',(sub)=>{
             console.log(sub);
@@ -64,6 +70,9 @@ var loadSockets = (io) => {
             for(let c in userList){
                 if(client == userList[c].socket){
                     userList[c].socket = null;
+                    if(!userList[c].pushSub){
+                        delete userList[c];
+                    }
                     io.emit('users',Object.keys(userList));
                     break;
                 }

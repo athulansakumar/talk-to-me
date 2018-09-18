@@ -13,7 +13,7 @@ color: #C7668A;
 }
 
 .chat-messages {
-height: 460px;
+height: calc(100vh - 94px);/*460px;*/
 overflow-x: hidden;
 overflow-y: auto;
 width: 100%;
@@ -192,4 +192,10 @@ position: relative;
 .main-container{
     padding-left: 0;
     padding-right: 0;
+}
+
+#menu-icon{
+    font-size:40px;
+    color:#32A8E6;
+    padding-top : 5px;
 }

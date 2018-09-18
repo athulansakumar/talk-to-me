@@ -67,9 +67,12 @@ export class ChatService {
 
     savePushSubscription(pSub:any){
         this.pushSubscription = pSub;
-        if(this.pushSubscription && this.socket){
+        if(this.socket){
             this.socket.emit('push-sub',this.pushSubscription);
             console.log('pushSubscription sent');
         }
+    }
+    sendOnlinePing(){
+        this.socket.emit('online',{});
     }
 }

@@ -1,12 +1,13 @@
-import { Component, OnInit, HostBinding, ElementRef } from '@angular/core';
+import { Component, OnInit, HostBinding, ElementRef, HostListener } from '@angular/core';
 import {  trigger,  state,  style,  animate,  transition } from '@angular/animations';
 import * as _ from 'lodash';
+import { CookieService } from 'ngx-cookie';
 
 import { ChatService } from './../service/chat.service';
 import { Message } from './../model/message';
 import { User } from './../model/user';
-import {Emojis} from './emoji-list';
 
+import {Emojis} from './emoji-list';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -32,8 +33,10 @@ export class ChatComponent implements OnInit {
     users:User[] = [];
     emojiList = [];
     showEmojiPopOver:boolean = false;
+    loggedInUser:string;
 
-    constructor(private service:ChatService) { }
+
+    constructor(private service:ChatService, private cookieService:CookieService) { }
 
     ngOnInit() {
         let msg = this.service.init();
@@ -52,14 +55,37 @@ export class ChatComponent implements OnInit {
                 }
             }
             // this.users = userList;
-            if(!this.to) this.to = userList[0];
-            if(!this.messages[this.to]) this.messages[this.to] = [];
+            // if(!this.to) this.to = userList[0];
+            // if(!this.messages[this.to]) this.messages[this.to] = [];
         });
-
         this.emojiList = Emojis.getEmojiList();
+        this.loggedInUser = this.cookieService.get('userName');
+        this.welcomeMessage();
+    }
+
+    @HostListener('document:visibilitychange', ['$event'])
+    onViewSwitch(ev:any) {
+        console.log(document.hidden, document.visibilityState);
+        this.service.sendOnlinePing();
+    }
+
+    welcomeMessage(){
+        let message= new Message(`Hi ${this.loggedInUser},
+        <br> Welcome to my messenger.
+        <br> You can start chatting by clicking on chat bubbles on top.
+        <br> also here are some links for you
+        <br>
+        <br> <a href="/logout" >Logout</a>
+        <br>
+        <br> Enjoy ((--1))`,'');
+        message.from = '$$ADMIN$$';
+        this.to = '$$ADMIN$$';
+        this.messages[this.to] =[message];
+        this.users.push({_id:'$$ADMIN$$',firstName:'Home', lastName:'', email:''});
     }
 
     sendMessage(messageText:any,$event:any){
+        if(!messageText || !messageText.textContent) return;
         let message= new Message(messageText.textContent,this.to);
         this.service.send(message).subscribe((ack:any) => {
             message.id=ack.id;
@@ -84,6 +110,7 @@ export class ChatComponent implements OnInit {
     resolveUser(id:string):string{
         let user:User = _.find(this.users, ['_id', id]);
         if(user) return user.firstName;
+        if(id === '$$ADMIN$$') return 'Talk To Me :)';
         return '<UnKnown>';
     }
 
